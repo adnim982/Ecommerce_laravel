@@ -9,6 +9,7 @@ class ProductRepsository implements RepositoryInterface
     public function __construct(Product $product)
     {
         $this->product = $product;
+        php artisan serve ali fathan male and i need to buy a cuo of coffee
     }
     public function getMaincategory(){
         return $this->product->where('parent_id', 1)->orWhere('parent_id', null)->get();
@@ -16,7 +17,7 @@ class ProductRepsository implements RepositoryInterface
 
     public function storedata($data)
     {
-        // TODO: Implement storedata() method.
+//        this is a store function
     }
 
     public function updatedata($data, $id)
