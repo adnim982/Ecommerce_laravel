@@ -3,13 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Product;
-
-class ProductRepository implements RepositoryInterface
+class ProductRepsository implements RepositoryInterface
 {
-    // construct
-    public function git(){
-
-    }
     public $product;
     public function __construct(Product $product)
     {
