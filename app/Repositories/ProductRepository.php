@@ -3,13 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\Product;
-//ali from git
-class ProductRepsository implements RepositoryInterface
+
+class ProductRepository implements RepositoryInterface
 {
+    // construct
+    public function git(){
+
+    }
     public $product;
     public function __construct(Product $product)
     {
-//        is good
         $this->product = $product;
     }
     public function getMaincategory(){
