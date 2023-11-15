@@ -2,84 +2,95 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
+use DataTables;
+use App\Models\Category;
+use App\Utils\ImageUpload;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\Category\CategoryStoreRequest;
+use App\Http\Requests\Dashboard\Category\CategoryDeleteRequest;
+use App\Http\Requests\Dashboard\Category\CategoryUpdateRequest;
+use App\Services\CategoryService;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    // make constructur to bind CategoryService class
+    protected $productService;
+    protected $categoryService;
+    public function __construct(ProductService $productService, CategoryService $categoryService){
+        $this->productService = $productService;
+        $this->categoryService = $categoryService;
+    }
+    public function index(){
+        $products = $this->productService->getMainProduct();
+        return view('dashboard.products.index', compact('products'));
+    }
+    public function getall()
     {
-        return view('dashboard.products.index');
+        return $this->productService->datatable();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $categories = $this->categoryService->getALL();
+        return view('dashboard.categories.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
-        //
+        // $data = $request->all();
+
+
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image');
+        // }else{
+        //     $image = null;
+        // }
+
+        // $this->categoryService->storedata($image, $data);
+
+        // return redirect()->route('categories.index')->with('success', 'Category has been created');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
-    {
-        //
-    }
+{
+    // $category = $this->categoryService->getByid($id);
+    // $mainCategories = $this->categoryService->getMaincategory();
+    // return view('dashboard.categories.edit', compact('category', 'mainCategories'));
+}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+
+
+public function update(CategoryUpdateRequest $request, $id)
+{
+    // $data = $request->all();
+    // $image = null;
+
+    // if ($request->hasFile('image')) {
+    //     $image = $request->file('image');
+    // }
+
+    // if ($image) {
+    //     $this->categoryService->updatedata($image, $data, $id);
+    // } else {
+    //     $this->categoryService->updatedataWithoutImage($data, $id);
+    // }
+
+    // return redirect()->route('categories.index')->with('success', 'All Inputs Have Been Updated');
+}
+
+
+    public function destroy(CategoryDeleteRequest $request)
     {
-        //
+        // $category = $this->categoryService->destroy($request->id);
+        // if ($category) {
+        //     return redirect()->route('categories.index')->with('success', 'Category has been deleted');
+        // } else {
+        //     return redirect()->route('categories.index')->with('error', 'Category not found');
+        // }
     }
+    
 }

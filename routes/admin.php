@@ -25,5 +25,6 @@ Route::get('category/ajax', [CategoryController::class, 'getall'])->name('catego
 Route::resource('categories', CategoryController::class);
 Route::get('product/ajax', [CategoryController::class, 'getall'])->name('product.getall');
 Route::resource('products', ProductController::class);
+Route::get('product/ajax', [ProductController::class, 'getall'])->name('product.getall');
 
 

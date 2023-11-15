@@ -30,9 +30,5 @@ class CategoryRepository implements RepositoryInterface
     {
         return $this->category->findOrFail($id)->delete($id);
     }
-    public function BaseQuery($relations=[]){
-        $query = Category::select('*')->with($relations);
-        return $query;
-
-    }
+    
 }

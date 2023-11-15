@@ -20,7 +20,8 @@ class CategoryService
        return $this->CategoryRepository->getMaincategory();
     }
     public function datatable(){
-        $query = $this->CategoryRepository->BaseQuery(['parent']);
+        $query = Category::select('*')->with('parent');
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn("action", function ($row) {

@@ -8,4 +8,5 @@ interface RepositoryInterface
     public function updatedata($data, $id);
     public function getByid($id);
     public function delete($id);
+    public function BaseQuery($relation = []);
 }
