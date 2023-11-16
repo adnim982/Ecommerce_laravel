@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->nullable();
             $table->decimal('discount_price', 8, 2)->nullable();
             $table->unsignedBigInteger('category_id')->references ('id')->on('categories');
+            $table->text('color')->nullable();
+            $table->text('size')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

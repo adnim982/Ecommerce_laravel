@@ -54,6 +54,7 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Category</th>
+                                            <th>Image</th>
                                             <th>Price</th>
                                             <th>Dicount Price </th>
                                             <th>Color</th>
@@ -158,6 +159,10 @@
                     {
                         data: 'category',
                         name: 'category'
+                    },
+                    {
+                        data: 'image',
+                        name: 'image'
                     },
                     {
                         data: 'price',

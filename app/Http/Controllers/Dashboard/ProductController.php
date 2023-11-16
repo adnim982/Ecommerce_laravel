@@ -7,11 +7,12 @@ use App\Models\Category;
 use App\Utils\ImageUpload;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
+use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\Prosuct\ProductStoreRequest;
 use App\Http\Requests\Dashboard\Category\CategoryStoreRequest;
 use App\Http\Requests\Dashboard\Category\CategoryDeleteRequest;
 use App\Http\Requests\Dashboard\Category\CategoryUpdateRequest;
-use App\Services\CategoryService;
 
 class ProductController extends Controller
 {
@@ -33,24 +34,25 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = $this->categoryService->getALL();
-        return view('dashboard.categories.create', compact('categories'));
+        $categories = $this->categoryService->getallcategory();
+        return view('dashboard.products.create', compact('categories'));
+
     }
 
-    public function store(CategoryStoreRequest $request)
+    public function store(ProductStoreRequest $request)
     {
-        // $data = $request->all();
+        $data = $request->all();
 
 
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        // }else{
-        //     $image = null;
-        // }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+        }else{
+            $image = null;
+        }
 
-        // $this->categoryService->storedata($image, $data);
+        $this->productService->storedata($image, $data);
 
-        // return redirect()->route('categories.index')->with('success', 'Category has been created');
+        return redirect()->route('products.index')->with('success', 'Product has been created');
     }
 
     public function edit($id)

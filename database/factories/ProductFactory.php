@@ -23,6 +23,8 @@ class ProductFactory extends Factory
             'price' => fake()->randomFloat(2, 0, 1000),
             'discount_price' => fake()->randomFloat(2, 0, 1000),
             'category_id' => fake()->numberBetween(1, 5),
+            'color' => fake()->safeHexColor(),
+            'size' => fake()->randomElement(['S', 'M', 'L']),
             // category_id: 1
 
         ];

@@ -20,7 +20,7 @@ class CategoryService
        return $this->CategoryRepository->getMaincategory();
     }
     public function datatable(){
-        $query = Category::select('*')->with('parent');
+        $query = $this->CategoryRepository->BaseQuery(['parent']);
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -115,6 +115,9 @@ public function destroy($id){
     $category = $this->CategoryRepository->delete($id);
     return $category;
 }
-
+public function getallcategory(){
+    // get all categories child
+    return $this->CategoryRepository->BaseQuery(['child'])->get();
+}
 
 }

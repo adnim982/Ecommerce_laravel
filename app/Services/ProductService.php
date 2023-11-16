@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Models\product;
+use App\Repositories\CategoryRepository;
 use App\Utils\ImageUpload;
 use App\Repositories\ProductRepository;
+use Illuminate\Database\Eloquent\Factories\Relationship;
 use Yajra\DataTables\Facades\DataTables;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Http\Request; // Import the Request class
@@ -12,15 +14,18 @@ use Illuminate\Http\Request; // Import the Request class
 class ProductService
 {
     public $ProductRepository;
-    public function __construct(ProductRepository $ProductRepository)
+    public $CategoryRepository;
+
+    public function __construct(ProductRepository $ProductRepository, CategoryRepository $CategoryRepository)
     {
         $this->ProductRepository = $ProductRepository;
+        $this->CategoryRepository = $ProductRepository;
     }
     public function getMainproduct(){
        return $this->ProductRepository->getMainProduct();
     }
     public function datatable(){
-        $query = Product::select('*')->with('category');
+        $query = $this->ProductRepository->BaseQuery(relations:['category'],withcount:['productcolor']);
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn("action", function ($row) {
@@ -71,23 +76,27 @@ class ProductService
                 return $row->category ? $row->category->name : 'Default Category';
 
             })
+            ->addColumn("image", function ($row) {
+                return '<img src="' . asset($row->image) . '" alt="" srcset="">';
+            })
             
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'image'])
             ->make(true);
     }
+      
     public function getByid($id){
         return $this->ProductRepository->getByid($id);
     }
+  
 
 
 
 public function storedata(UploadedFile $image, array $data)
 {
-    // if ($image) {
-    //     $data['image'] = ImageUpload::upload($image, 'categories');
-    // }
-
-    // return $this->productRepository->storedata($data);
+    if($image){
+        $data['image'] = ImageUpload::upload($image, 'products');
+    }
+    return $this->ProductRepository->storedata($data);
 
 }
 public function updatedata(UploadedFile $image, array $data, $id)
