@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_images', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('product_color_size_id')->references('id')->on('product_color_size');
-            $table->string('image');
-            $table->timestamps();
+        $table->increments('id');
+        $table->integer('product_id')->unsigned();
+        $table->foreign('product_id')->references ('id')->on('products');
+        $table->string('image');
+        $table->timestamps ();
         });
     }
 

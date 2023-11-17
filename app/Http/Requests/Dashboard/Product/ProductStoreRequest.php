@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\Prosuct;
+namespace App\Http\Requests\Dashboard\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -21,14 +21,16 @@ class ProductStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required', 
-            'category_id' => 'required',
-            'price' => 'required',
-            'image' => 'required',
-            'description' => 'required',
-            'discount_price' => 'required',
-            'color' => 'required',
-            'size' => 'required',
+            'name' => 'required|| max:255',
+            'description' => 'required|string',
+            'price' => 'nullable| numeric',
+            'category_id' => 'required|numeric|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'discount_price' => 'nullable|numeric',
+            'colors' => 'nullable|array',
+            'color.*' => 'nullable|string',
+            'size' => 'nullable|array',
+            'size.*' => 'nullable|string',
         ];
     }
 }

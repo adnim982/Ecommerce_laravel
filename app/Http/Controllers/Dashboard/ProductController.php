@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\Prosuct\ProductStoreRequest;
+use App\Http\Requests\Dashboard\Product\ProductStoreRequest;
 use App\Http\Requests\Dashboard\Category\CategoryStoreRequest;
 use App\Http\Requests\Dashboard\Category\CategoryDeleteRequest;
 use App\Http\Requests\Dashboard\Category\CategoryUpdateRequest;
@@ -49,6 +49,18 @@ class ProductController extends Controller
         }else{
             $image = null;
         }
+        if (isset($data['colors'])) {
+        $data['color'] = implode(',', $data['colors']);
+        unset($data['colors']);
+        }
+        if (isset($data['sizes'])) {
+        $data['size'] = implode(',', $data['sizes']);
+        unset($data['sizes']);
+        }
+        
+    
+
+        
 
         $this->productService->storedata($image, $data);
 
@@ -57,9 +69,9 @@ class ProductController extends Controller
 
     public function edit($id)
 {
-    // $category = $this->categoryService->getByid($id);
-    // $mainCategories = $this->categoryService->getMaincategory();
-    // return view('dashboard.categories.edit', compact('category', 'mainCategories'));
+        $categories = $this->categoryService->getallcategory();
+        $product = $this->productService->getById($id);
+        return view('dashboard.products.edit', compact ('categories', 'product'));
 }
 
 
@@ -68,31 +80,32 @@ class ProductController extends Controller
 
 public function update(CategoryUpdateRequest $request, $id)
 {
-    // $data = $request->all();
-    // $image = null;
+    $data = $request->all();
+    $image = null;
 
-    // if ($request->hasFile('image')) {
-    //     $image = $request->file('image');
-    // }
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+    }
 
-    // if ($image) {
-    //     $this->categoryService->updatedata($image, $data, $id);
-    // } else {
-    //     $this->categoryService->updatedataWithoutImage($data, $id);
-    // }
+    if ($image) {
+        $this->productService->updatedata($image, $data, $id);
+    } else {
+        $this->productService->updatedataWithoutImage($data, $id);
+    }
+    
 
-    // return redirect()->route('categories.index')->with('success', 'All Inputs Have Been Updated');
+    return redirect()->route('products.index')->with('success', 'All Inputs Have Been Updated');
 }
 
 
     public function destroy(CategoryDeleteRequest $request)
     {
-        // $category = $this->categoryService->destroy($request->id);
-        // if ($category) {
-        //     return redirect()->route('categories.index')->with('success', 'Category has been deleted');
-        // } else {
-        //     return redirect()->route('categories.index')->with('error', 'Category not found');
-        // }
+        $product = $this->productService->destroy($request->id);
+        if ($product) {
+            return redirect()->route('products.index')->with('success', 'Category has been deleted');
+        } else {
+            return redirect()->route('products.index')->with('error', 'Category not found');
+        }
     }
     
 }

@@ -16,26 +16,27 @@ class ProductRepository implements RepositoryInterface
         return $this->product->where('category_id', 1)->orWhere('category_id', null)->get();
     }
     public function storedata($data){
+        
         return $this->product->create($data);
     }
+    
     public function updatedata($data, $id)
     {
-        // return $this->product->findOrFail($id)->update($data);
+        return $this->product->findOrFail($id)->update($data);
     }
     public function getByid($id){
-        return $this->product->withcount('child')->findOrFail($id);
+        return $this->product->findOrFail($id);
         
     }
     public function delete($id)
     {
-        // return $this->product->findOrFail($id)->delete($id);
+        return $this->product->findOrFail($id)->delete($id);
     }
     public function BaseQuery($relations = [], $withcount=[]){
         $query = $this->product->select('*')->with($relations);
-        foreach($withcount as $key => $value){
-            $query->withCount($value);
-        }
+      
         return $query;
     }
+    
     
 }

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->references ('id')->on('categories');
             $table->text('color')->nullable();
             $table->text('size')->nullable();
-            $table->timestamps();
+            $table->timestamps();      
             $table->softDeletes();
         });
     }

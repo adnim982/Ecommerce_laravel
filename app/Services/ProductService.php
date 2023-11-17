@@ -93,33 +93,50 @@ class ProductService
 
 public function storedata(UploadedFile $image, array $data)
 {
+    
     if($image){
         $data['image'] = ImageUpload::upload($image, 'products');
     }
     return $this->ProductRepository->storedata($data);
 
 }
+
 public function updatedata(UploadedFile $image, array $data, $id)
 {
-    // $product = $this->productRepository->getByid($id);
+    $product = $this->ProductRepository->getByid($id);
 
-    // if ($image) {
-    //     $data['image'] = ImageUpload::upload($image, 'categories');
-    // }
+    if ($image) {
+        $data['image'] = ImageUpload::upload($image, 'categories');
+    }
+    if (isset($data['colors'])) {
+        $data['color'] = implode(',', $data['colors']);
+        unset($data['colors']);
+        }
+        if (isset($data['sizes'])) {
+        $data['size'] = implode(',', $data['sizes']);
+        unset($data['sizes']);
+        }
 
-    // return $this->productRepository->updatedata($data, $id);
+    return $this->ProductRepository->updatedata($data, $id);
 }
 
 public function updatedataWithoutImage(array $data, $id)
 {
-    // Update product data without modifying the image
-    // unset($data['image']);
-    // return $this->productRepository->updatedata($data, $id);
+    unset($data['image']);
+    if (isset($data['colors'])) {
+        $data['color'] = implode(',', $data['colors']);
+        unset($data['colors']);
+        }
+        if (isset($data['sizes'])) {
+        $data['size'] = implode(',', $data['sizes']);
+        unset($data['sizes']);
+        }
+    return $this->ProductRepository->updatedata($data, $id);
 }
 // delete
 public function destroy($id){
-    // $product = $this->productRepository->delete($id);
-    // return $product;
+    $product = $this->ProductRepository->delete($id);
+    return $product;
 }
 
 
